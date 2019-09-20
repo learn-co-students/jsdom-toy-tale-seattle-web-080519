@@ -4,7 +4,7 @@
       "id": 1,
       "name": "Woody",
       "image": "http://www.pngmart.com/files/3/Toy-Story-Woody-PNG-Photos.png",
-      "likes": 5
+      "likes": 63
     },
     {
       "id": 2,
@@ -47,6 +47,12 @@
       "name": "Little Green Men",
       "image": "http://www.pngmart.com/files/3/Toy-Story-Alien-PNG-File.png",
       "likes": -2
+    },
+    {
+      "name": "bear",
+      "image": "https://cdn.shopify.com/s/files/1/2284/6393/products/fao-schwarz-plush-2018-edition-12-inch-plush-anniversary-bear-with-puffer-vest-3856695656535_620x.jpg?v=1552020969",
+      "likes": 0,
+      "id": 9
     }
   ]
 }
