@@ -4,72 +4,69 @@ let addToy = false
 
 // YOUR CODE HERE
 const mainUrl = 'http://localhost:3000/toys'
-
+const TOY_COLLECTION_DIV = document.querySelector('#toy-collection');
 
 fetch(mainUrl)
   .then(resp => resp.json())
   .then(data => showToys(data))
 
 function showToys(lostToys) {
-  lostToys.map(toy =>addCard(toy));
+  lostToys.map(toy =>displayCard(toy));
 };
 
-function addCard(data) {
-  const toyCollectionDiv = document.querySelector('#toy-collection');
-  toyCollectionDiv.className = "card";
-  
-  const name = document.createElement("p");
-  name.textContent = data.name;
+function displayCard(toy) {
+  const newDiv = document.createElement("div");
+  newDiv.className = "card";
+  newDiv.id = `card${toy.id}`;
 
-  const img = document.createElement("img");
-  img.src = data.image;
-  img.className = "toy-avatar"
+  const name = document.createElement("p");
+  name.textContent = toy.name;
 
   const likes = document.createElement("p");
-  likes.id = data.id
-  
-    if (data.likes <= 1) {
-      likes.textContent = data.likes + " Like";
-    } else {
-      likes.textContent = data.likes + " Likes"
-    }
+  likes.className = "likes";
+  if (toy.likes <= 1) {
+    likes.textContent = toy.likes + " Like";
+  } else {
+    likes.textContent = toy.likes + " Likes"
+  }
+
+  const img = document.createElement("img");
+  img.className = "toy-avatar";
+  img.src = toy.image;
 
   const likeButton = document.createElement("button");
-  likeButton.className = "like-btn"
-  likeButton.textContent = "Like"
+  likeButton.className = "like-btn";
+  likeButton.textContent = "Like";
+  likeButton.addEventListener("click", () => addLike(toy))
 
-  toyCollectionDiv.appendChild( name )
-  toyCollectionDiv.appendChild( img )
-  toyCollectionDiv.appendChild( likes )
-  toyCollectionDiv.appendChild( likeButton )
-
-  likeButton.addEventListener("click", () =>addLike(data))
+  TOY_COLLECTION_DIV.appendChild( newDiv )
+  newDiv.appendChild( name )
+  newDiv.appendChild( img )
+  newDiv.appendChild( likes )
+  newDiv.appendChild( likeButton )
 };
 
-function addLike(data) {
-  data.likes += 1
-
-  fetch(`${mainUrl}/${data.id}`, {
+function addLike(toy, event) {
+  fetch(`${mainUrl}/${toy.id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json"
     },
-    body: JSON.stringify({ likes: data.likes })
+    body: JSON.stringify({ likes: toy.likes += 1 })
   })
   .then(resp => resp.json())
-  .then(data => updateCardLike(data))
+  .then(data => updateCardLike(data));
 };
 
-function updateCardLike(data) {
-  let likenum = document.getElementById(data.id)
-  if (data.likes <= 1) {
-    likenum.textContent = data.likes + " Like";
+function updateCardLike(toy) {
+  let likenum = document.querySelector(`#card${toy.id} .likes`)
+  if (toy.likes <= 1) {
+    likenum.textContent = toy.likes + " Like";
   } else {
-    likenum.textContent = data.likes + " Likes"
+    likenum.textContent = toy.likes + " Likes"
   }
 };
-
 
 addBtn.addEventListener('click', () => {
   // hide & seek with the form
@@ -102,17 +99,6 @@ function showForm() {
         body: JSON.stringify(newToy)
       })
       .then(resp => resp.json())
-      .then(data => addCard(data))
+      .then(data => displayCard(data))
   })
 }
-
-// function showLikes(parent, toy) {
-  
-//   parent.addEventListener("click", (e) => {
-//     let parent = document.querySelector(".like-btn");
-//     e.preventDefault()
-    
-
-// }
-
-// showLikes();
